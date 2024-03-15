@@ -146,6 +146,29 @@ func TestPreciseSchedule(t *testing.T) {
 		)
 	})
 
+	t.Run("errors when dead letter arn is not present", func(t *testing.T) {
+		eventiScheduler := scheduler.New()
+		fakeEventBridge := newFakeEventBridgeSpec("precise-schedule-arn")
+		result := preciseschedule.New(eventiScheduler, fakeEventBridge)(
+			preciseschedule.Input{
+				ClientToken: "bd6dccce-e27a-11ee-87f6-e7571459c4c5",
+				Description: "This a schedule description",
+				GroupName:   "my-group",
+				Name:        "bd6dccce-e27a-11ee-87f6-e7571459c4c5",
+				At:          "at(2000-01-01T00:00:00)",
+				Target:      "target-arn",
+				RoleArn:     "arn:aws:iam::123456789012:role/schedulerroletoinvoketarget",
+			},
+		)
+
+		require.Error(t, result)
+		require.ErrorContains(
+			t,
+			errors.New("InvalidParameter: 1 validation error(s) found.\n- minimum field size of 1, CreateScheduleInput.Target.DeadLetterConfig.Arn.\n"),
+			result.Error(),
+		)
+	})
+
 	t.Run("errors when target arn is not present", func(t *testing.T) {
 		eventiScheduler := scheduler.New()
 		fakeEventBridge := newFakeEventBridgeSpec("precise-schedule-arn")

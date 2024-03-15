@@ -118,41 +118,40 @@ func TestScheduler(t *testing.T) {
 
 	t.Run("ToAWS", func(t *testing.T) {
 		t.Run("When it is a precise schedule without flexible time window deleting after completion with target", func(t *testing.T) {
+			precisionAwsBaseScheduleInput := scheduler.
+				New(
+					"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
+					"This a schedule description",
+					"my-group",
+					"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
+				).
+				WithoutFlexibleTimeWindow().
+				DeleteAfterCompletion().
+				WithTarget(
+					"target-arn",
+					"dead-letter-arn",
+				).ToAWS()
 
-		})
-		precisionAwsBaseScheduleInput := scheduler.
-			New(
-				"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
-				"This a schedule description",
-				"my-group",
-				"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
-			).
-			WithoutFlexibleTimeWindow().
-			DeleteAfterCompletion().
-			WithTarget(
-				"target-arn",
-				"dead-letter-arn",
-			).ToAWS()
-
-		require.Equal(
-			t,
-			&awsscheduler.CreateScheduleInput{
-				ClientToken:           aws.String("bd6dccce-e27a-11ee-87f6-e7571459c4c5"),
-				Description:           aws.String("This a schedule description"),
-				GroupName:             aws.String("my-group"),
-				Name:                  aws.String("bd6dccce-e27a-11ee-87f6-e7571459c4c5"),
-				ActionAfterCompletion: aws.String("DELETE"),
-				FlexibleTimeWindow: &awsscheduler.FlexibleTimeWindow{
-					Mode: aws.String("OFF"),
-				},
-				Target: &awsscheduler.Target{
-					Arn: aws.String("target-arn"),
-					DeadLetterConfig: &awsscheduler.DeadLetterConfig{
-						Arn: aws.String("dead-letter-arn"),
+			require.Equal(
+				t,
+				&awsscheduler.CreateScheduleInput{
+					ClientToken:           aws.String("bd6dccce-e27a-11ee-87f6-e7571459c4c5"),
+					Description:           aws.String("This a schedule description"),
+					GroupName:             aws.String("my-group"),
+					Name:                  aws.String("bd6dccce-e27a-11ee-87f6-e7571459c4c5"),
+					ActionAfterCompletion: aws.String("DELETE"),
+					FlexibleTimeWindow: &awsscheduler.FlexibleTimeWindow{
+						Mode: aws.String("OFF"),
+					},
+					Target: &awsscheduler.Target{
+						Arn: aws.String("target-arn"),
+						DeadLetterConfig: &awsscheduler.DeadLetterConfig{
+							Arn: aws.String("dead-letter-arn"),
+						},
 					},
 				},
-			},
-			precisionAwsBaseScheduleInput,
-		)
+				precisionAwsBaseScheduleInput,
+			)
+		})
 	})
 }

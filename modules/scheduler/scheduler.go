@@ -65,5 +65,6 @@ func (b *BaseScheduleInput) ToAWS() *awsscheduler.CreateScheduleInput {
 				Arn: aws.String(b.Target.DeadLetterConfigArn),
 			},
 		},
+		ScheduleExpression: aws.String(b.ScheduleExpression),
 	}
 }

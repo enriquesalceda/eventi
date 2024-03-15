@@ -128,7 +128,8 @@ func TestScheduler(t *testing.T) {
 				WithTarget(
 					"target-arn",
 					"dead-letter-arn",
-				).At("2000-01-01T00:00:00")
+				).
+				At("2000-01-01T00:00:00")
 
 			require.Equal(
 				t,
@@ -166,7 +167,9 @@ func TestScheduler(t *testing.T) {
 				WithTarget(
 					"target-arn",
 					"dead-letter-arn",
-				).ToAWS()
+				).
+				At("2000-01-01T00:00:00").
+				ToAWS()
 
 			require.Equal(
 				t,
@@ -185,6 +188,7 @@ func TestScheduler(t *testing.T) {
 							Arn: aws.String("dead-letter-arn"),
 						},
 					},
+					ScheduleExpression: aws.String("2000-01-01T00:00:00"),
 				},
 				precisionAwsBaseScheduleInput,
 			)

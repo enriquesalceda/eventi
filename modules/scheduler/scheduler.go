@@ -13,6 +13,7 @@ type BaseScheduleInput struct {
 	ActionAfterCompletion string
 	FlexibleTimeWindow    *FlexibleTimeWindow
 	Target                *Target
+	ScheduleExpression    string
 }
 
 type FlexibleTimeWindow struct {
@@ -40,6 +41,11 @@ func (b *BaseScheduleInput) DeleteAfterCompletion() *BaseScheduleInput {
 
 func (b *BaseScheduleInput) WithTarget(targetArn string, deadLetterConfigArn string) *BaseScheduleInput {
 	b.Target = &Target{Arn: targetArn, DeadLetterConfigArn: deadLetterConfigArn}
+	return b
+}
+
+func (b *BaseScheduleInput) At(scheduleExpression string) *BaseScheduleInput {
+	b.ScheduleExpression = scheduleExpression
 	return b
 }
 

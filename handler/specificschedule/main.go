@@ -19,6 +19,6 @@ func main() {
 			return events.APIGatewayProxyResponse{Body: "error", StatusCode: 400}, nil
 		}
 
-		return events.APIGatewayProxyResponse{Body: fmt.Sprintf("Hello %s", input.Name), StatusCode: 200}, nil
+		return events.APIGatewayProxyResponse{Body: fmt.Sprintf("Hello %s!", input.Name), StatusCode: 200}, nil
 	})
 }

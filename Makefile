@@ -11,7 +11,7 @@ zip:
 deploy:
 	sls deploy
 
-builds.zips.deploy:
+build.zips.deploy:
 	make build && make zip && sls deploy
 
 clean.deploy:

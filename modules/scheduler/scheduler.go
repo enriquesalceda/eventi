@@ -1,5 +1,10 @@
 package scheduler
 
+import (
+	"github.com/aws/aws-sdk-go/aws"
+	awsscheduler "github.com/aws/aws-sdk-go/service/scheduler"
+)
+
 type BaseScheduleInput struct {
 	ClientToken           string
 	Description           string
@@ -36,4 +41,23 @@ func (b *BaseScheduleInput) DeleteAfterCompletion() *BaseScheduleInput {
 func (b *BaseScheduleInput) WithTarget(targetArn string, deadLetterConfigArn string) *BaseScheduleInput {
 	b.Target = &Target{Arn: targetArn, DeadLetterConfigArn: deadLetterConfigArn}
 	return b
+}
+
+func (b *BaseScheduleInput) ToAWS() *awsscheduler.CreateScheduleInput {
+	return &awsscheduler.CreateScheduleInput{
+		ClientToken:           aws.String(b.ClientToken),
+		Description:           aws.String(b.Description),
+		GroupName:             aws.String(b.GroupName),
+		Name:                  aws.String(b.Name),
+		ActionAfterCompletion: aws.String(b.ActionAfterCompletion),
+		FlexibleTimeWindow: &awsscheduler.FlexibleTimeWindow{
+			Mode: aws.String(b.FlexibleTimeWindow.Mode),
+		},
+		Target: &awsscheduler.Target{
+			Arn: aws.String(b.Target.Arn),
+			DeadLetterConfig: &awsscheduler.DeadLetterConfig{
+				Arn: aws.String(b.Target.DeadLetterConfigArn),
+			},
+		},
+	}
 }

@@ -13,10 +13,10 @@ func TestScheduler(t *testing.T) {
 		t.Run("without flexible time window deleting after completion with target at a specific time", func(t *testing.T) {
 			baseScheduleInput := scheduler.
 				New(
-					"This a schedule description",
 					"my-group",
 				).
 				WithName("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
+				WithDescription("This a schedule description").
 				WithClientToken("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
 				WithoutFlexibleTimeWindow().
 				DeleteAfterCompletion().
@@ -52,10 +52,10 @@ func TestScheduler(t *testing.T) {
 		t.Run("When it is a precise schedule without flexible time window deleting after completion with target", func(t *testing.T) {
 			precisionAwsBaseScheduleInput := scheduler.
 				New(
-					"This a schedule description",
 					"my-group",
 				).
 				WithName("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
+				WithDescription("This a schedule description").
 				WithClientToken("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
 				WithoutFlexibleTimeWindow().
 				DeleteAfterCompletion().

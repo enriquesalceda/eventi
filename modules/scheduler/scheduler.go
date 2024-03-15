@@ -25,8 +25,13 @@ type Target struct {
 	DeadLetterConfigArn string
 }
 
-func New(description string, groupName string) *BaseScheduleInput {
-	return &BaseScheduleInput{Description: description, GroupName: groupName}
+func New(groupName string) *BaseScheduleInput {
+	return &BaseScheduleInput{GroupName: groupName}
+}
+
+func (b *BaseScheduleInput) WithDescription(description string) *BaseScheduleInput {
+	b.Description = description
+	return b
 }
 
 func (b *BaseScheduleInput) WithName(name string) *BaseScheduleInput {

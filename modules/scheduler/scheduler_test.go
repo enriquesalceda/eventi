@@ -12,11 +12,28 @@ func TestScheduler(t *testing.T) {
 	t.Run("New schedule", func(t *testing.T) {
 		t.Run("Base schedule input", func(t *testing.T) {
 			baseScheduleInput := scheduler.New(
-				"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 				"This a schedule description",
 				"my-group",
 				"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 			)
+
+			require.Equal(
+				t,
+				&scheduler.BaseScheduleInput{
+					Description: "This a schedule description",
+					GroupName:   "my-group",
+					Name:        "bd6dccce-e27a-11ee-87f6-e7571459c4c5",
+				},
+				baseScheduleInput,
+			)
+		})
+
+		t.Run("Base schedule input with client token", func(t *testing.T) {
+			baseScheduleInput := scheduler.New(
+				"This a schedule description",
+				"my-group",
+				"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
+			).WithClientToken("bd6dccce-e27a-11ee-87f6-e7571459c4c5")
 
 			require.Equal(
 				t,
@@ -32,11 +49,12 @@ func TestScheduler(t *testing.T) {
 
 		t.Run("Create a precise schedule without flexible time window", func(t *testing.T) {
 			baseScheduleInput := scheduler.New(
-				"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 				"This a schedule description",
 				"my-group",
 				"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
-			).WithoutFlexibleTimeWindow()
+			).
+				WithClientToken("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
+				WithoutFlexibleTimeWindow()
 
 			require.Equal(
 				t,
@@ -56,11 +74,11 @@ func TestScheduler(t *testing.T) {
 		t.Run("Create a precise schedule without flexible time window deleting after completion", func(t *testing.T) {
 			baseScheduleInput := scheduler.
 				New(
-					"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 					"This a schedule description",
 					"my-group",
 					"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 				).
+				WithClientToken("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
 				WithoutFlexibleTimeWindow().
 				DeleteAfterCompletion()
 
@@ -83,11 +101,11 @@ func TestScheduler(t *testing.T) {
 		t.Run("Create a precise schedule without flexible time window deleting after completion with target", func(t *testing.T) {
 			baseScheduleInput := scheduler.
 				New(
-					"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 					"This a schedule description",
 					"my-group",
 					"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 				).
+				WithClientToken("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
 				WithoutFlexibleTimeWindow().
 				DeleteAfterCompletion().
 				WithTarget(
@@ -118,11 +136,11 @@ func TestScheduler(t *testing.T) {
 		t.Run("Create a precise schedule without flexible time window deleting after completion with target at a specific time", func(t *testing.T) {
 			baseScheduleInput := scheduler.
 				New(
-					"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 					"This a schedule description",
 					"my-group",
 					"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 				).
+				WithClientToken("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
 				WithoutFlexibleTimeWindow().
 				DeleteAfterCompletion().
 				WithTarget(
@@ -157,11 +175,11 @@ func TestScheduler(t *testing.T) {
 		t.Run("When it is a precise schedule without flexible time window deleting after completion with target", func(t *testing.T) {
 			precisionAwsBaseScheduleInput := scheduler.
 				New(
-					"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 					"This a schedule description",
 					"my-group",
 					"bd6dccce-e27a-11ee-87f6-e7571459c4c5",
 				).
+				WithClientToken("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
 				WithoutFlexibleTimeWindow().
 				DeleteAfterCompletion().
 				WithTarget(

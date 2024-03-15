@@ -14,6 +14,7 @@ type BaseScheduleInput struct {
 	FlexibleTimeWindow    *FlexibleTimeWindow
 	Target                *Target
 	ScheduleExpression    string
+	RoleArn               string
 }
 
 type FlexibleTimeWindow struct {
@@ -67,8 +68,13 @@ func (b *BaseScheduleInput) At(scheduleExpression string) *BaseScheduleInput {
 	return b
 }
 
-func (b *BaseScheduleInput) ToAWS() *awsscheduler.CreateScheduleInput {
-	return &awsscheduler.CreateScheduleInput{
+func (b *BaseScheduleInput) WithRoleArn(roleArn string) *BaseScheduleInput {
+	b.RoleArn = roleArn
+	return b
+}
+
+func (b *BaseScheduleInput) ToAWS() (*awsscheduler.CreateScheduleInput, error) {
+	createScheduleInput := &awsscheduler.CreateScheduleInput{
 		ClientToken:           aws.String(b.ClientToken),
 		Description:           aws.String(b.Description),
 		GroupName:             aws.String(b.GroupName),
@@ -82,7 +88,15 @@ func (b *BaseScheduleInput) ToAWS() *awsscheduler.CreateScheduleInput {
 			DeadLetterConfig: &awsscheduler.DeadLetterConfig{
 				Arn: aws.String(b.Target.DeadLetterConfigArn),
 			},
+			RoleArn: aws.String(b.RoleArn),
 		},
 		ScheduleExpression: aws.String(b.ScheduleExpression),
 	}
+
+	err := createScheduleInput.Validate()
+	if err != nil {
+		return &awsscheduler.CreateScheduleInput{}, err
+	}
+
+	return createScheduleInput, nil
 }

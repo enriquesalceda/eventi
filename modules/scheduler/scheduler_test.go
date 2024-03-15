@@ -112,7 +112,8 @@ func TestScheduler(t *testing.T) {
 				require.ErrorContains(
 					t,
 					errors.New(
-						"InvalidParameter: 1 validation error(s) found.\n- minimum field size of 1, CreateScheduleInput.Target.RoleArn.\n"),
+						"InvalidParameter: 1 validation error(s) found.\n- minimum field size of 1, CreateScheduleInput.Target.RoleArn.\n",
+					),
 					err.Error(),
 				)
 			})

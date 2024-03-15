@@ -10,7 +10,7 @@ import (
 
 func TestScheduler(t *testing.T) {
 	t.Run("New Precision Schedule", func(t *testing.T) {
-		t.Run("without flexible time window deleting after completion with target at a specific time", func(t *testing.T) {
+		t.Run("with name, description, group name, client token, target, delete after completion and without flexible time window", func(t *testing.T) {
 			baseScheduleInput := scheduler.
 				New().
 				WithName("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
@@ -45,10 +45,8 @@ func TestScheduler(t *testing.T) {
 				baseScheduleInput,
 			)
 		})
-	})
 
-	t.Run("ToAWS", func(t *testing.T) {
-		t.Run("When it is a precise schedule without flexible time window deleting after completion with target", func(t *testing.T) {
+		t.Run("ToAWS", func(t *testing.T) {
 			precisionAwsBaseScheduleInput := scheduler.
 				New().
 				WithName("bd6dccce-e27a-11ee-87f6-e7571459c4c5").
